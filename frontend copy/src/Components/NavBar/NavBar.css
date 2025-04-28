@@ -1,0 +1,347 @@
+/* Cooking-Themed Navbar Component */
+.navbar-component {
+  background: linear-gradient(135deg, #552200, #CC5500);
+  padding: 0 2.5rem;
+  height: 80px;
+  box-shadow: 0 4px 12px rgba(34, 34, 34, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(244, 233, 216, 0.2);
+}
+
+/* Navbar Container */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Logo Styles */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar-logo-icon {
+  color: #F4E9D8;
+  background: rgba(204, 85, 0, 0.3);
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+.navbar-logo-text {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #F4E9D8;
+  background: linear-gradient(to right, #F4E9D8, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Icons Container */
+.navbar-items {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.5rem 1rem;
+  background: rgba(244, 233, 216, 0.1);
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  margin-left: auto;
+}
+
+/* Icon Container */
+.navbar-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Icon Styles */
+.navbar-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F4E9D8;
+  background: rgba(244, 233, 216, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-icon svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.navbar-icon:hover {
+  background: rgba(244, 233, 216, 0.2);
+  transform: translateY(-2px) rotate(10deg);
+  color: #F4E9D8;
+}
+
+.navbar-icon:hover svg {
+  transform: scale(1.1);
+}
+
+.navbar-icon.active {
+  background: rgba(244, 233, 216, 0.3);
+  color: #FFD700;
+}
+
+/* Notification Badge */
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #FF5252;
+  color: #F4E9D8;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* User Card Styles */
+.navbar-user-card {
+  position: absolute;
+  top: 90px;
+  right: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  width: 380px;
+  overflow: hidden;
+  z-index: 1001;
+  animation: slideIn 0.2s ease;
+  border: 1px solid #FFD700;
+}
+
+.navbar-card-header-wrapper {
+  position: relative;
+  padding-top: 24px;
+  background: linear-gradient(135deg, #552200, #CC5500);
+}
+
+.navbar-card-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="%23F4E9D8" stroke-width="0.5" stroke-dasharray="5,3"/></svg>');
+  opacity: 0.3;
+}
+
+.navbar-card-header {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding: 0 1.5rem 1.5rem;
+  z-index: 1;
+}
+
+.navbar-card-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #CC5500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  border: 4px solid #FFD700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-card-titles {
+  flex: 1;
+  color: #ffffff;
+}
+
+.navbar-card-titles h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-card-titles p {
+  font-size: 0.875rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.navbar-card-content {
+  padding: 1.5rem;
+}
+
+.navbar-card-info {
+  display: grid;
+  gap: 1rem;
+}
+
+.navbar-card-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  border-left: 4px solid #CC5500;
+}
+
+.navbar-card-field:hover {
+  background: #f3f4f6;
+  transform: translateX(4px);
+}
+
+.navbar-card-field svg {
+  width: 20px;
+  height: 20px;
+  color: #CC5500;
+}
+
+.navbar-card-field-content {
+  flex: 1;
+}
+
+.navbar-card-field-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.navbar-card-field-value {
+  font-size: 0.925rem;
+  color: #111827;
+  font-weight: 500;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.navbar-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.navbar-action-btn {
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.navbar-action-btn.primary {
+  background-color: #CC5500;
+  color: #ffffff;
+  border: none;
+  grid-column: 1 / -1;
+}
+
+.navbar-action-btn.primary:hover {
+  background-color: #552200;
+}
+
+.navbar-action-btn.danger {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.navbar-action-btn.danger:hover {
+  background-color: #fecaca;
+}
+
+.navbar-action-btn.secondary {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+}
+
+.navbar-action-btn.secondary:hover {
+  background-color: #e5e7eb;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .navbar-component {
+    padding: 0 1rem;
+    height: 70px;
+  }
+
+  .navbar-logo-text {
+    font-size: 1.5rem;
+  }
+
+  .navbar-items {
+    gap: 1rem;
+  }
+
+  .navbar-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navbar-user-card {
+    right: 1rem;
+    width: calc(100vw - 2rem);
+    max-width: 380px;
+  }
+}

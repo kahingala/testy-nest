@@ -1,0 +1,539 @@
+/* PostManagement.css - Cooking/Recipe Theme */
+:root {
+  --primary: #CC5500; /* Burnt orange */
+  --primary-dark: #552200; /* Dark brown */
+  --primary-light: #FF8C42; /* Light orange */
+  --background: #F4E9D8; /* Cream */
+  --background-light: #FFF9F0; /* Light cream */
+  --text: #222222; /* Dark gray */
+  --text-light: #5A4A42; /* Warm gray */
+  --error: #D32F2F; /* Tomato red */
+  --success: #388E3C; /* Fresh green */
+  --border: rgba(204, 85, 0, 0.2); /* Primary with opacity */
+  --shadow: 0 2px 8px rgba(85, 34, 0, 0.1);
+  --card-shadow: 0 4px 12px rgba(85, 34, 0, 0.08);
+}
+
+.posts-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background);
+  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" opacity="0.03"><path d="M20,20 Q30,10 40,20 T60,20 T80,20" stroke="%23CC5500" fill="none" stroke-width="1"/></svg>');
+  background-size: 200px;
+}
+
+.posts-container main {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 250px;
+  margin-top: 80px;
+  width: calc(100% - 250px);
+}
+
+.posts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--primary);
+}
+
+.posts-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.posts-header-title h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  font-family: 'Playfair Display', serif;
+}
+
+.posts-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.posts-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.posts-btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.posts-btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(204, 85, 0, 0.3);
+}
+
+.posts-btn-secondary {
+  background-color: var(--background-light);
+  color: var(--primary-dark);
+  border: 1px solid var(--primary);
+}
+
+.posts-btn-secondary:hover {
+  background-color: #e8d9c0;
+}
+
+.post-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(85, 34, 0, 0.15);
+}
+
+.post-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.post-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-user-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.post-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+.post-content {
+  padding: 24px;
+}
+
+.post-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.post-description {
+  color: var(--text-light);
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.post-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.post-media-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: #F3F4F6;
+}
+
+.post-media-item img,
+.post-media-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.post-media-item:hover img,
+.post-media-item:hover video {
+  transform: scale(1.05);
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: rgba(204, 85, 0, 0.02);
+}
+
+.post-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.post-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.post-action-btn:hover {
+  background: rgba(204, 85, 0, 0.08);
+  color: var(--primary-dark);
+}
+
+.post-action-btn.liked {
+  color: var(--primary);
+}
+
+.post-comments-section {
+  padding: 20px 24px;
+  background: var(--background-light);
+  border-top: 1px solid var(--border);
+}
+
+.post-comment {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.post-comment-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.post-comment-content {
+  flex: 1;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(85, 34, 0, 0.05);
+}
+
+.post-comment-user {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.post-comment-text {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.post-comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.post-comment-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.post-comment-actions button:hover {
+  background: rgba(204, 85, 0, 0.05);
+}
+
+.post-comment-actions button.danger:hover {
+  background: rgba(211, 47, 47, 0.05);
+  color: var(--error);
+}
+
+.post-add-comment {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.post-comment-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.post-comment-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(204, 85, 0, 0.1);
+}
+
+.post-comment-submit {
+  background: var(--primary);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.post-comment-submit:hover {
+  background: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+.posts-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+.posts-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(204, 85, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+}
+
+.posts-empty h3 {
+  color: var(--primary-dark);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.posts-empty p {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+.posts-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.posts-modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+}
+
+.posts-modal-image,
+.posts-modal-video {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.posts-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.posts-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.post-follow-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1.5px solid var(--primary);
+  background: transparent;
+  color: var(--primary-dark);
+}
+
+.post-follow-btn:hover {
+  background: rgba(204, 85, 0, 0.05);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(85, 34, 0, 0.1);
+}
+
+.post-follow-btn.following {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.post-follow-btn.following:hover {
+  background: var(--error);
+  border-color: var(--error);
+  color: white;
+}
+
+.post-follow-btn.following:hover:before {
+  content: "Unfollow";
+}
+
+.post-follow-btn.following:hover span {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .posts-container main {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .posts-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .posts-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .post-header {
+    padding: 16px;
+  }
+
+  .post-content {
+    padding: 16px;
+  }
+
+  .post-media-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .post-actions {
+    padding: 12px 16px;
+  }
+
+  .post-comments-section {
+    padding: 16px;
+  }
+
+  .post-action-buttons {
+    gap: 12px;
+  }
+}
