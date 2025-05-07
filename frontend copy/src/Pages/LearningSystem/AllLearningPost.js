@@ -612,7 +612,7 @@ const [comments, setComments] = useState({});
   <button
     onClick={() => handleReviewSubmit(post.id)}
     style={{
-      marginLeft:'5px',
+      marginLeft:'25px',
       marginTop: '6px',
       backgroundColor: '#CC5500',
       color: 'white',
