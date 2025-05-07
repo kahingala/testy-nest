@@ -1,4 +1,13 @@
 /* SideBar Styles - Cooking/Baking Theme */
+.menuButton {
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  background: none;
+  border: none;
+  z-index: 1000;
+  cursor: pointer;
+}
 .sideBarContainerNav {
   display: flex;
   flex-direction: column;
@@ -156,4 +165,14 @@
   background-repeat: repeat-x;
   opacity: 0.3;
   margin: 1rem 0;
+}
+@media (max-width: 768px) {
+  .sideBarNav {
+      position: fixed;
+      width: 250px;
+      height: 100vh;
+      background-color: white;
+      z-index: 999;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  }
 }

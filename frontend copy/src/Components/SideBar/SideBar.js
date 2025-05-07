@@ -1,9 +1,11 @@
-import React from 'react';
-import { BookOpenText, ChefHat, PieChart, Utensils, LogOut, Home } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { BookOpenText, ChefHat, PieChart, Utensils, LogOut, Home, Menu } from 'lucide-react';
 import styles from './SideBar.module.css';
 import NavBar from '../NavBar/NavBar';
 
 function SideBar() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
     const currentPath = window.location.pathname;
 
     const handleLogout = () => {
@@ -11,12 +13,34 @@ function SideBar() {
         localStorage.removeItem('userType');
         window.location.href = '/';
     };
+    const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
 
     return (
+        <>
+        
+        
+
         <div className={styles.sideBarContainerNav}>
             <div className={styles.sideBarNavbarWrapper}>
                 <NavBar />
             </div>
+            {isMobile && (
+            <button className={styles.menuButton} onClick={toggleSidebar}>
+                <Menu size={28} />
+            </button>
+        )}
+            {(!isMobile || isSidebarOpen) && (
             <div className={styles.sideBarNav}>
                 {/* TastyNest Logo */}
                 <div className={styles.sideBarLogo}>
@@ -68,7 +92,10 @@ function SideBar() {
                     </div>
                 </div>
             </div>
+            )}
         </div>
+        
+        </>
     );
 }
 
