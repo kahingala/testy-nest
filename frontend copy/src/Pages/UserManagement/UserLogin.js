@@ -142,7 +142,22 @@ function UserLogin() {
             <div className={styles.socialLogin}>
               <div className={styles.divider}>or continue with</div>
               <button
-                onClick={() => window.location.href = 'http://localhost:8080/oauth2/authorization/google'}
+                onClick={async () => {
+                  try {
+                    const response = await fetch('http://localhost:8080/oauth2/authorization/google', {
+                      method: 'GET',
+                      credentials: 'include',
+                      headers: {
+                        'Accept': 'application/json',
+                      },
+                    });
+                    if (response.ok) {
+                      window.location.href = response.url;
+                    }
+                  } catch (error) {
+                    console.error('Error:', error);
+                  }
+                }}
                 className={styles.googleButton}
               >
                 <img src={GoogleLogo} alt="Google logo" className={styles.googleIcon} />

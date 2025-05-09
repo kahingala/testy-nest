@@ -5,20 +5,22 @@ import backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class OAuthController {
 
     @Autowired
     private UserRepository userRepository;
 
     @GetMapping("/oauth2/success")
-    public RedirectView handleGoogleLogin(Authentication authentication) {
+    public ResponseEntity<?> handleGoogleLogin(Authentication authentication) {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
@@ -42,6 +44,23 @@ public class OAuthController {
             user.getFullname()
         );
 
-        return new RedirectView(redirectUrl);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
+        headers.add("Access-Control-Allow-Credentials", "true");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        headers.add("Access-Control-Allow-Headers", "*");
+        
+        return ResponseEntity.status(302)
+                .headers(headers)
+                .body(new RedirectView(redirectUrl));
+    }
+
+    @GetMapping("/oauth2/authorization/google")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    public ResponseEntity<?> initiateGoogleLogin() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
+        headers.add("Access-Control-Allow-Credentials", "true");
+        return ResponseEntity.ok().headers(headers).build();
     }
 }
