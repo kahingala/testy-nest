@@ -38,6 +38,9 @@ function AllLearningPost() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userId = localStorage.getItem('userID');
+  const [ratings, setRatings] = useState({});
+const [comments, setComments] = useState({});
+
 
   useEffect(() => {
     fetchPosts();
@@ -228,6 +231,29 @@ function AllLearningPost() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleStarClick = (postId, star) => {
+    setRatings(prev => ({ ...prev, [postId]: star }));
+  };
+  
+  const handleCommentChange = (postId, commentText) => {
+    setComments(prev => ({ ...prev, [postId]: commentText }));
+  };
+  
+  const handleReviewSubmit = (postId) => {
+    const rating = ratings[postId];
+    const comment = comments[postId];
+  
+    if (!rating || !comment?.trim()) {
+      alert("Please provide both a rating and comment.");
+      return;
+    }
+  
+    // Optionally send to backend here
+    console.log(`Post ${postId} rated ${rating} stars with comment: "${comment}"`);
+    alert("Review submitted!");
+  };
+  
 
   return (
     <div className="learning-container">
@@ -556,6 +582,52 @@ function AllLearningPost() {
                   )}
 
                   <footer className="learning-card-footer">
+                  {/* Rating & Review Section */}
+                  
+  <div style={{marginRight:'5px'}}>
+    {[1, 2, 3, 4, 5].map((star) => (
+      <span
+        key={star}
+        onClick={() => handleStarClick(post.id, star)}
+        style={{
+          marginRight:'2px',
+          cursor: 'pointer',
+          fontSize: '20px',
+          color: star <= (ratings[post.id] || 0) ? '#ffc107' : '#e4e5e9'
+        }}
+      >
+        ★
+      </span>
+    ))}
+  </div>
+
+  <textarea
+    placeholder="Leave a review..."
+    value={comments[post.id] || ''}
+    onChange={(e) => handleCommentChange(post.id, e.target.value)}
+    style={{ width: '100%', margin: '6px', padding: '5px' }}
+    rows={3}
+  />
+
+  <button
+    onClick={() => handleReviewSubmit(post.id)}
+    style={{
+      marginLeft:'25px',
+      marginTop: '6px',
+      backgroundColor: '#CC5500',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      padding: '2px 12px',
+     
+      cursor: 'pointer'
+    }}
+  >
+    Submit Review
+  </button>
+
+
+      
                     <button 
                       onClick={() => handleLike(post.id)}
                       className={`learning-like-btn ${post.likes?.[userId] ? 'liked' : ''}`}
