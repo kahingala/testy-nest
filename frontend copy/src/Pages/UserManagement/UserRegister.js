@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { IoMdAdd, IoMdPerson, IoMdMail, IoMdLock, IoMdCall, IoMdRestaurant } from "react-icons/io";
-import { FaUtensils, FaCookieBite, FaBirthdayCake, FaSignInAlt } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import {
+    IoMdAdd, IoMdPerson, IoMdMail, IoMdLock, IoMdCall, IoMdRestaurant
+} from "react-icons/io";
+import {
+    FaUtensils, FaCookieBite, FaBirthdayCake, FaSignInAlt
+} from "react-icons/fa";
 import { GiCookingPot, GiChefToque } from "react-icons/gi";
 import styles from './UserRegister.module.css';
 
@@ -15,12 +19,12 @@ function UserRegister() {
     const [skillInput, setSkillInput] = useState('');
     const [errors, setErrors] = useState({});
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    // Validate field when value changes
+    useEffect(() => {
+        validateAllFields();
+    }, [formData]);
 
-    const validateForm = () => {
+    const validateAllFields = () => {
         const newErrors = {};
         const { fullname, email, password, phone, skills } = formData;
 
@@ -30,16 +34,19 @@ function UserRegister() {
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             newErrors.email = "Invalid email format.";
         }
+
         if (!password.trim()) {
             newErrors.password = "Password is required.";
         } else if (password.length < 6) {
             newErrors.password = "Password must be at least 6 characters.";
         }
+
         if (!phone.trim()) {
             newErrors.phone = "Phone number is required.";
         } else if (!/^\d{10}$/.test(phone)) {
             newErrors.phone = "Phone must be exactly 10 digits.";
         }
+
         if (skills.length < 2) {
             newErrors.skills = "Please add at least two cooking skills.";
         }
@@ -48,16 +55,22 @@ function UserRegister() {
         return Object.keys(newErrors).length === 0;
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
     const handleAddSkill = () => {
         if (skillInput.trim()) {
-            setFormData({ ...formData, skills: [...formData.skills, skillInput.trim()] });
+            const updatedSkills = [...formData.skills, skillInput.trim()];
+            setFormData({ ...formData, skills: updatedSkills });
             setSkillInput('');
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return;
+        if (!validateAllFields()) return;
 
         try {
             const response = await fetch('http://localhost:8080/user', {
@@ -65,6 +78,7 @@ function UserRegister() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
+
             if (response.ok) {
                 alert('User registered successfully!');
                 setFormData({ fullname: '', email: '', password: '', phone: '', skills: [] });
@@ -185,7 +199,6 @@ function UserRegister() {
                                             handleInputChange(e);
                                         }
                                     }}
-                                    maxLength="10"
                                 />
                             </div>
                             {errors.phone && <p className={styles.errorText}>{errors.phone}</p>}
@@ -244,7 +257,6 @@ function UserRegister() {
                             Register Now
                         </button>
 
-                        {/* Footer */}
                         <p className={styles.authFooter}>
                             Already have an account?{' '}
                             <a href="/" className={styles.authLink}>

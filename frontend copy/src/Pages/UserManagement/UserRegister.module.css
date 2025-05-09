@@ -411,3 +411,9 @@
   color: var(--accent);
   animation-delay: 1s;
 }
+
+.errorText {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
