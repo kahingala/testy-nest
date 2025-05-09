@@ -13,10 +13,39 @@ function UserRegister() {
         skills: [],
     });
     const [skillInput, setSkillInput] = useState('');
+    const [errors, setErrors] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+        const { fullname, email, password, phone, skills } = formData;
+
+        if (!fullname.trim()) newErrors.fullname = "Full Name is required.";
+        if (!email.trim()) {
+            newErrors.email = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = "Invalid email format.";
+        }
+        if (!password.trim()) {
+            newErrors.password = "Password is required.";
+        } else if (password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters.";
+        }
+        if (!phone.trim()) {
+            newErrors.phone = "Phone number is required.";
+        } else if (!/^\d{10}$/.test(phone)) {
+            newErrors.phone = "Phone must be exactly 10 digits.";
+        }
+        if (skills.length < 2) {
+            newErrors.skills = "Please add at least two cooking skills.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleAddSkill = () => {
@@ -28,22 +57,7 @@ function UserRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let isValid = true;
-
-        if (!formData.email) {
-            alert("Email is required");
-            isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            alert("Email is invalid");
-            isValid = false;
-        }
-
-        if (formData.skills.length < 2) {
-            alert("Please add at least two cooking skills.");
-            isValid = false;
-        }
-
-        if (!isValid) return;
+        if (!validateForm()) return;
 
         try {
             const response = await fetch('http://localhost:8080/user', {
@@ -54,9 +68,10 @@ function UserRegister() {
             if (response.ok) {
                 alert('User registered successfully!');
                 setFormData({ fullname: '', email: '', password: '', phone: '', skills: [] });
+                setErrors({});
                 window.location.href = '/';
             } else if (response.status === 409) {
-                alert('Email already exists!');
+                setErrors({ email: 'Email already exists.' });
             } else {
                 alert('Failed to register user.');
             }
@@ -67,7 +82,6 @@ function UserRegister() {
 
     return (
         <div className={styles.authContainer}>
-            {/* Floating food icons */}
             <GiCookingPot className={styles.floatingIcon} />
             <FaCookieBite className={styles.floatingIcon} />
             <FaBirthdayCake className={styles.floatingIcon} />
@@ -90,7 +104,7 @@ function UserRegister() {
                         </h1>
                         <p className={styles.authSubtitle}>Join our community of food enthusiasts</p>
                     </div>
-                    <form onSubmit={handleSubmit} className={styles.authForm}>
+                    <form onSubmit={handleSubmit} className={styles.authForm} noValidate>
                         {/* Full Name */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
@@ -106,9 +120,9 @@ function UserRegister() {
                                     placeholder="Full Name"
                                     value={formData.fullname}
                                     onChange={handleInputChange}
-                                    required
                                 />
                             </div>
+                            {errors.fullname && <p className={styles.errorText}>{errors.fullname}</p>}
                         </div>
 
                         {/* Email */}
@@ -126,9 +140,9 @@ function UserRegister() {
                                     placeholder="Email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    required
                                 />
                             </div>
+                            {errors.email && <p className={styles.errorText}>{errors.email}</p>}
                         </div>
 
                         {/* Password */}
@@ -146,9 +160,9 @@ function UserRegister() {
                                     placeholder="Password"
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    required
                                 />
                             </div>
+                            {errors.password && <p className={styles.errorText}>{errors.password}</p>}
                         </div>
 
                         {/* Phone */}
@@ -172,11 +186,9 @@ function UserRegister() {
                                         }
                                     }}
                                     maxLength="10"
-                                    pattern="[0-9]{10}"
-                                    title="Please enter exactly 10 digits."
-                                    required
                                 />
                             </div>
+                            {errors.phone && <p className={styles.errorText}>{errors.phone}</p>}
                         </div>
 
                         {/* Skills */}
@@ -185,8 +197,6 @@ function UserRegister() {
                                 <FaUtensils className={styles.formLabelIcon} />
                                 Cooking Skills
                             </label>
-
-                            {/* Display added skills */}
                             <div className={styles.skillsDisplay}>
                                 {formData.skills.map((skill, index) => (
                                     <span className={styles.skillTag} key={index}>
@@ -204,15 +214,13 @@ function UserRegister() {
                                     </span>
                                 ))}
                             </div>
-
-                            {/* Skill Input + Add Button */}
                             <div className={styles.skillInputWrapper}>
                                 <div style={{ position: 'relative', flex: 1 }}>
                                     <FaUtensils className={styles.inputIcon} />
                                     <input
                                         className={styles.formInput}
                                         type="text"
-                                        placeholder="Add a cooking skill (e.g., Baking, Grilling)"
+                                        placeholder="Add a cooking skill (e.g., Baking)"
                                         value={skillInput}
                                         onChange={(e) => setSkillInput(e.target.value)}
                                         style={{ paddingLeft: '2.5rem' }}
@@ -227,6 +235,7 @@ function UserRegister() {
                                     Add Skill
                                 </button>
                             </div>
+                            {errors.skills && <p className={styles.errorText}>{errors.skills}</p>}
                         </div>
 
                         {/* Submit Button */}
@@ -235,7 +244,7 @@ function UserRegister() {
                             Register Now
                         </button>
 
-                        {/* Footer Link */}
+                        {/* Footer */}
                         <p className={styles.authFooter}>
                             Already have an account?{' '}
                             <a href="/" className={styles.authLink}>
