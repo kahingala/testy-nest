@@ -151,7 +151,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #CC5500;
+  background: var(--primary);
   color: white;
   display: flex;
   align-items: center;
@@ -171,6 +171,42 @@
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.learning-actions-compact {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.learning-btn-update,
+.learning-btn-delete {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.learning-btn-update {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.learning-btn-update:hover {
+  background-color: #0056b3;
+}
+
+.learning-btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.learning-btn-delete:hover {
+  background-color: #c82333;
 }
 
 .learning-card-content {
@@ -216,7 +252,8 @@
   padding: 0.75rem 1.25rem;
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .learning-like-btn {
@@ -442,6 +479,152 @@
   margin-right: auto;
 }
 
+/* Review Styles */
+.review-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--background-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.review-form textarea {
+  border: 1px solid var(--border);
+  resize: vertical;
+  font-size: 0.95rem;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.review-form textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(204, 85, 0, 0.1);
+}
+
+.review-form .star-rating {
+  margin-bottom: 0.75rem;
+  display: flex;
+  gap: 4px;
+}
+
+.review-form .star {
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.review-form button {
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review-form button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.reviews-list {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.reviews-list h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 0 0 1rem;
+}
+
+.reviews-list .review-item {
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.reviews-list .review-item:first-child {
+  border-top: none;
+}
+
+.reviews-list .review-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.reviews-list .review-author {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.reviews-list .review-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.reviews-list .review-stars .star {
+  font-size: 1rem;
+}
+
+.reviews-list .review-text {
+  color: var(--text-light);
+  margin: 0.5rem 0;
+}
+
+.reviews-list .review-date {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.reviews-list .review-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.reviews-list .review-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.reviews-list .review-actions .edit-btn {
+  background: #007bff;
+  color: white;
+}
+
+.reviews-list .review-actions .edit-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.reviews-list .review-actions .delete-btn {
+  background: var(--error);
+  color: white;
+}
+
+.reviews-list .review-actions .delete-btn:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .learning-container main {
@@ -560,6 +743,7 @@
   width: 100%;
   height: 200px;
   border: none;
+  border-radius: 8px;
 }
 
 .learning-content-link {
@@ -583,19 +767,19 @@
 
 /* Update the grid layout for posts container */
 .posts-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Changed from repeat(3, 1fr) to repeat(2, 1fr) */
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* Adjust responsive breakpoints if needed */
+/* Adjust responsive breakpoints */
 @media (max-width: 768px) {
-    .posts-container {
-        grid-template-columns: 1fr; /* Single column for mobile */
-        gap: 1.5rem;
-        padding: 1rem;
-    }
-} 
+  .posts-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+}
