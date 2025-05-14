@@ -1,4 +1,3 @@
-/* UserRegister.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap');
 
 /* Vibrant Food-Themed Color Palette */
@@ -212,7 +211,7 @@
   color: var(--text-light);
 }
 
-/* Skills Section - Now "Cooking Skills" */
+/* Skills Section - Now "Cooking Skills" with Dropdown */
 .skillsDisplay {
   display: flex;
   flex-wrap: wrap;
@@ -248,34 +247,36 @@
   transform: scale(1.1);
 }
 
-.skillInputContainer {
+.skillInputWrapper {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   position: relative;
 }
 
-.skillInputContainer .inputIcon {
+.skillInputWrapper .inputIcon {
   left: 1rem;
 }
 
-.addSkillButton {
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+/* Style the select element for dropdown */
+.formInput[type="select"] {
+  width: 100%;
+  padding: 0.875rem 1.25rem 0.875rem 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
   transition: var(--transition);
+  background: white;
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237F8C8D' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
 }
 
-.addSkillButton:hover {
-  background: var(--primary-light);
-  transform: scale(1.05);
+.formInput[type="select"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
 
 /* Submit Button - Styled as a Cooking Button */
@@ -416,32 +417,4 @@
     color: red;
     font-size: 0.85rem;
     margin-top: 4px;
-}
-
-/* Add Skill Button - Rectangular with Text */
-.addSkillButtonReal {
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  padding: 0.75rem 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 2px 8px var(--shadow);
-}
-
-.addSkillButtonReal:hover {
-  background: var(--primary-light);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.addSkillButtonReal svg {
-  font-size: 1.2rem;
 }
