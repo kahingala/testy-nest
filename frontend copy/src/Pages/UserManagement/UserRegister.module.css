@@ -189,15 +189,15 @@
 }
 
 .formInput {
-  width: 100%; /* Ensure full width */
-  max-width: 100%; /* Prevent overflow */
+  width: 100%; 
+  max-width: 100%; 
   padding: 0.875rem 1.25rem 0.875rem 2.5rem;
   border: 1px solid var(--border);
   border-radius: var(--border-radius);
   font-size: 0.95rem;
   transition: var(--transition);
   background: white;
-  box-sizing: border-box; /* Include padding in width */
+  box-sizing: border-box; 
 }
 
 .formInput:focus {
@@ -289,7 +289,7 @@
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
 
-/* Submit Button - Styled as a Cooking Button */
+
 .submitButton {
   width: 100%;
   padding: 1rem;
@@ -319,7 +319,7 @@
   font-size: 1.2rem;
 }
 
-/* Footer Link */
+
 .authFooter {
   text-align: center;
   margin-top: 1.5rem;
@@ -347,7 +347,7 @@
   font-size: 1rem;
 }
 
-/* Responsive Design */
+
 @media (min-width: 768px) {
   .authHero {
     display: flex;
@@ -357,8 +357,8 @@
   
   .authFormContainer {
     flex: 0.55;
-    padding: 3rem 2rem; /* Adjust padding for more space */
-    min-width: 400px; /* Ensure enough width for form */
+    padding: 3rem 2rem; 
+    min-width: 400px; 
   }
 }
 
@@ -372,8 +372,8 @@
   }
   
   .authFormContainer {
-    padding: 2rem 1rem; /* Reduced padding for smaller screens */
-    min-width: 100%; /* Ensure full width on mobile */
+    padding: 2rem 1rem; 
+    min-width: 100%; 
   }
   
   .authTitle {
@@ -385,8 +385,8 @@
   }
 
   .formInput {
-    font-size: 0.9rem; /* Slightly smaller font for mobile */
-    padding: 0.75rem 1rem 0.75rem 2.5rem; /* Adjust padding */
+    font-size: 0.9rem; 
+    padding: 0.75rem 1rem 0.75rem 2.5rem; 
   }
 }
 
@@ -435,5 +435,5 @@
   color: var(--error);
   font-size: 0.85rem;
   margin-top: 4px;
-  white-space: nowrap; /* Prevent text wrapping */
+  white-space: nowrap; 
 }
