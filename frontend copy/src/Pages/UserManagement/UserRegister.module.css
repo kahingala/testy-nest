@@ -417,3 +417,31 @@
     font-size: 0.85rem;
     margin-top: 4px;
 }
+
+/* Add Skill Button - Rectangular with Text */
+.addSkillButtonReal {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.addSkillButtonReal:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.addSkillButtonReal svg {
+  font-size: 1.2rem;
+}

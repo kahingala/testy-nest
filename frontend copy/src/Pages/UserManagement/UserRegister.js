@@ -16,7 +16,6 @@ function UserRegister() {
         phone: '',
         skills: [],
     });
-    const [skillInput, setSkillInput] = useState('');
     const [errors, setErrors] = useState({});
 
     // Validate field when value changes
@@ -58,14 +57,6 @@ function UserRegister() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-    };
-
-    const handleAddSkill = () => {
-        if (skillInput.trim()) {
-            const updatedSkills = [...formData.skills, skillInput.trim()];
-            setFormData({ ...formData, skills: updatedSkills });
-            setSkillInput('');
-        }
     };
 
     const handleSubmit = async (e) => {
@@ -204,7 +195,7 @@ function UserRegister() {
                             {errors.phone && <p className={styles.errorText}>{errors.phone}</p>}
                         </div>
 
-                        {/* Skills */}
+                        {/* Skills - Updated to use dropdown */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 <FaUtensils className={styles.formLabelIcon} />
@@ -230,23 +221,26 @@ function UserRegister() {
                             <div className={styles.skillInputWrapper}>
                                 <div style={{ position: 'relative', flex: 1 }}>
                                     <FaUtensils className={styles.inputIcon} />
-                                    <input
+                                    <select
                                         className={styles.formInput}
-                                        type="text"
-                                        placeholder="Add a cooking skill (e.g., Baking)"
-                                        value={skillInput}
-                                        onChange={(e) => setSkillInput(e.target.value)}
+                                        value=""
+                                        onChange={(e) => {
+                                            if (e.target.value && !formData.skills.includes(e.target.value)) {
+                                                const updatedSkills = [...formData.skills, e.target.value];
+                                                setFormData({ ...formData, skills: updatedSkills });
+                                                e.target.value = ""; // Reset select to placeholder
+                                            }
+                                        }}
                                         style={{ paddingLeft: '2.5rem' }}
-                                    />
+                                    >
+                                        <option value="" disabled hidden>Select a skill</option>
+                                        <option value="Baking">Baking</option>
+                                        <option value="Grilling">Grilling</option>
+                                        <option value="Boiling">Boiling</option>
+                                        <option value="Sautéing">Sautéing</option>
+                                        <option value="Roasting">Roasting</option>
+                                    </select>
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={handleAddSkill}
-                                    className={styles.addSkillButtonReal}
-                                >
-                                    <IoMdAdd />
-                                    Add Skill
-                                </button>
                             </div>
                             {errors.skills && <p className={styles.errorText}>{errors.skills}</p>}
                         </div>
