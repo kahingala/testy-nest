@@ -283,7 +283,7 @@ function AllPost() {
         <div className="posts-header">
           <div className="posts-header-title">
             <MessageSquare size={24} />
-            <h1>Cooking & Baking Recipe-Sharing Post</h1>
+            <h1>Cooking & Baking Recipes</h1>
           </div>
           <div className="posts-actions">
             <button
