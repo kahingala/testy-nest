@@ -1,0 +1,435 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap');
+
+/* Food-Themed Color Palette */
+:root {
+  --primary: #E74C3C; /* Tomato red */
+  --primary-light: #FF6B57; /* Lighter red */
+  --secondary: #F39C12; /* Orange */
+  --accent: #27AE60; /* Fresh green */
+  --background: #FFF9F2; /* Warm cream */
+  --text: #2C3E50; /* Dark blue-gray */
+  --text-light: #7F8C8D; /* Light gray */
+  --border: #E0E0E0; /* Light gray border */
+  --shadow: rgba(231, 76, 60, 0.2);
+  --border-radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main Container */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--background);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.loginContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.loginCard {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px var(--shadow);
+  overflow: hidden;
+  min-height: 600px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Section - Food Image */
+.loginHero {
+  flex: 1;
+  position: relative;
+  display: none;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.loginHeroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+  z-index: 1;
+}
+
+.loginHero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(231, 76, 60, 0.85), rgba(243, 156, 18, 0.7));
+  z-index: 2;
+}
+
+.loginHeroContent {
+  position: relative;
+  z-index: 3;
+  padding: 3rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.loginHeroTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.loginHeroSubtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.featureIcon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featureText {
+  font-size: 0.95rem;
+}
+
+/* Form Section */
+.loginFormContainer {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+
+/* TestyNest Logo */
+.loginLogo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.loginLogoText {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loginLogoIcon {
+  font-size: 2.5rem;
+  color: var(--secondary);
+}
+
+.loginHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.loginTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loginTitleIcon {
+  color: var(--secondary);
+}
+
+.loginSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+
+/* Form Elements */
+.loginForm {
+  margin: 1.5rem 0;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.formLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.formLabelIcon {
+  color: var(--secondary);
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.875rem 1.25rem 0.875rem 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  transition: var(--transition);
+  background: white;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+/* Submit Button - Styled as a Cooking Button */
+.loginButton {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loginButton:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow);
+}
+
+.loginButtonIcon {
+  font-size: 1.2rem;
+}
+
+/* Social Login */
+.socialLogin {
+  margin: 1.5rem 0;
+  position: relative;
+  text-align: center;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+  margin: 0 0.5rem;
+}
+
+.googleButton {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: white;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.googleButton:hover {
+  background-color: #f8f8f8;
+  border-color: var(--text-light);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.googleIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Footer Link */
+.loginFooter {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.loginLink {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loginLink:hover {
+  color: var(--primary-light);
+  text-decoration: underline;
+}
+
+.loginLinkIcon {
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .loginHero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .loginFormContainer {
+    flex: 0.55;
+  }
+}
+
+@media (max-width: 767px) {
+  .loginContainer {
+    padding: 1rem;
+  }
+  
+  .loginCard {
+    flex-direction: column;
+  }
+  
+  .loginFormContainer {
+    padding: 2rem 1.5rem;
+  }
+  
+  .loginTitle {
+    font-size: 1.6rem;
+  }
+  
+  .loginLogoText {
+    font-size: 2.5rem;
+  }
+}
+
+/* Food Icons Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.floatingIcon {
+  position: absolute;
+  opacity: 0.1;
+  z-index: 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+.floatingIcon:nth-child(1) {
+  top: 10%;
+  left: 5%;
+  font-size: 3rem;
+  color: var(--primary);
+  animation-delay: 0s;
+}
+
+.floatingIcon:nth-child(2) {
+  top: 70%;
+  left: 80%;
+  font-size: 2.5rem;
+  color: var(--secondary);
+  animation-delay: 0.5s;
+}
+
+.floatingIcon:nth-child(3) {
+  top: 30%;
+  left: 85%;
+  font-size: 2rem;
+  color: var(--accent);
+  animation-delay: 1s;
+}

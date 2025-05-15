@@ -1,0 +1,198 @@
+.container {
+  display: flex;
+  padding-top: 80px;
+}
+
+.sidebarWrapper {
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.contentSection {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  margin-left: 200px;
+  min-height: calc(100vh - 80px);
+  background-color: #F4E9D8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.actionButtonAdd {
+  background-color: #CC5500;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.actionButtonAdd:hover {
+  background-color: #552200;
+}
+
+.actionButtonMy {
+  background: white;
+  border: 1px solid #CC5500;
+  border-radius: 4px;
+  color: #552200;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.actionButtonMy:hover {
+  background-color: #F4E9D8;
+}
+
+.postCardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.notFoundBox {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(34, 34, 34, 0.1);
+  border: 1px solid #e0e0e0;
+  margin-top: 1rem;
+}
+
+.notFoundMsg {
+  font-size: 1.1rem;
+  color: #552200;
+  margin: 1rem 0;
+}
+
+.notFoundBtn {
+  background-color: #CC5500;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.notFoundBtn:hover {
+  background-color: #552200;
+}
+
+.postCard {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(34, 34, 34, 0.1);
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease;
+}
+
+.postCard:hover {
+  transform: translateY(-2px);
+}
+
+.userDetailsCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.nameSectionPost {
+  font-weight: 600;
+  color: #552200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.actionBtnIconPost {
+  display: flex;
+  gap: 1rem;
+}
+
+.actionBtnIcon {
+  cursor: pointer;
+  color: #CC5500;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.actionBtnIcon:hover {
+  color: #552200;
+}
+
+.topicCont {
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: #552200;
+}
+
+.topicContB {
+  color: #CC5500;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.disCon {
+  margin-bottom: 1rem;
+}
+
+.disConTopic {
+  font-weight: 600;
+  color: #552200;
+  margin-bottom: 0.5rem;
+}
+
+.disConPera {
+  white-space: pre-line;
+  color: #222222;
+  line-height: 1.5;
+}
+
+.dateCard {
+  font-size: 0.9rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding-top: 70px;
+  }
+  .sidebarWrapper {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+  .contentSection {
+    margin-left: 0;
+    padding: 1rem;
+    min-height: auto;
+  }
+  .actionButtonAdd,
+  .actionButtonMy {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 0.75rem;
+  }
+}

@@ -1,0 +1,413 @@
+/* UserRegister.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap');
+
+/* Vibrant Food-Themed Color Palette */
+:root {
+  --primary: #E74C3C; /* Tomato red */
+  --primary-light: #FF6B57; /* Lighter red */
+  --secondary: #F39C12; /* Orange */
+  --accent: #27AE60; /* Fresh green */
+  --background: #FFF9F2; /* Warm cream */
+  --text: #2C3E50; /* Dark blue-gray */
+  --text-light: #7F8C8D; /* Light gray */
+  --border: #E0E0E0; /* Light gray border */
+  --shadow: rgba(231, 76, 60, 0.2);
+  --border-radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main Container */
+.authContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--background);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.authContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.authInnerContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px var(--shadow);
+  overflow: hidden;
+  min-height: 650px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Section - Cooking Image */
+.authHero {
+  flex: 1;
+  position: relative;
+  display: none;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.authHeroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+  z-index: 1;
+}
+
+.authHero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(231, 76, 60, 0.85), rgba(243, 156, 18, 0.7));
+  z-index: 2;
+}
+
+.authHeroContent {
+  position: relative;
+  z-index: 3;
+  padding: 3rem;
+  color: white;
+}
+
+.authHeroTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.authHeroSubtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Form Section */
+.authFormContainer {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+
+/* TestyNest Logo */
+.authLogo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.authLogoText {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.authLogoIcon {
+  font-size: 2.5rem;
+  color: var(--secondary);
+}
+
+.authHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.authTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.authTitleIcon {
+  color: var(--secondary);
+}
+
+.authSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+
+/* Form Elements */
+.authForm {
+  margin: 1.5rem 0;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.formLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.formLabelIcon {
+  color: var(--secondary);
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.875rem 1.25rem 0.875rem 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  transition: var(--transition);
+  background: white;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.formInput.error {
+  border-color: var(--error);
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+}
+
+/* Skills Section - Now "Cooking Skills" */
+.skillsDisplay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  min-height: 36px;
+}
+
+.skillTag {
+  background: var(--background);
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skillTagIcon {
+  color: var(--secondary);
+}
+
+.deleteSkill {
+  color: var(--primary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.deleteSkill:hover {
+  transform: scale(1.1);
+}
+
+.skillInputContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.skillInputContainer .inputIcon {
+  left: 1rem;
+}
+
+.addSkillButton {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.addSkillButton:hover {
+  background: var(--primary-light);
+  transform: scale(1.05);
+}
+
+/* Submit Button - Styled as a Cooking Button */
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submitButton:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow);
+}
+
+.submitButtonIcon {
+  font-size: 1.2rem;
+}
+
+/* Footer Link */
+.authFooter {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.authLink {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.authLink:hover {
+  color: var(--primary-light);
+  text-decoration: underline;
+}
+
+.authLinkIcon {
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .authHero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .authFormContainer {
+    flex: 0.55;
+  }
+}
+
+@media (max-width: 767px) {
+  .authContainer {
+    padding: 1rem;
+  }
+  
+  .authInnerContainer {
+    flex-direction: column;
+  }
+  
+  .authFormContainer {
+    padding: 2rem 1.5rem;
+  }
+  
+  .authTitle {
+    font-size: 1.6rem;
+  }
+  
+  .authLogoText {
+    font-size: 2.5rem;
+  }
+}
+
+/* Food Icons */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.floatingIcon {
+  position: absolute;
+  opacity: 0.1;
+  z-index: 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+.floatingIcon:nth-child(1) {
+  top: 10%;
+  left: 5%;
+  font-size: 3rem;
+  color: var(--primary);
+  animation-delay: 0s;
+}
+
+.floatingIcon:nth-child(2) {
+  top: 70%;
+  left: 80%;
+  font-size: 2.5rem;
+  color: var(--secondary);
+  animation-delay: 0.5s;
+}
+
+.floatingIcon:nth-child(3) {
+  top: 30%;
+  left: 85%;
+  font-size: 2rem;
+  color: var(--accent);
+  animation-delay: 1s;
+}
