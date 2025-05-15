@@ -318,7 +318,7 @@ function AllPost() {
               <MessageSquare size={32} />
             </div>
             <h3>No Posts Found</h3>
-            <p>Be the first to share with the community!</p>
+            <p>No posts yet — be the first to contribute!</p>
               <button 
               className="posts-btn posts-btn-primary"
                 onClick={() => navigate('/addNewPost')}
