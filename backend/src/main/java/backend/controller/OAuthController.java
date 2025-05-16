@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class OAuthController {
             
             String email = (String) attributes.get("email");
             String name = (String) attributes.get("name");
+            String picture = (String) attributes.get("picture");
             
             if (email == null || name == null) {
                 return ResponseEntity.badRequest().body(Map.of(
@@ -43,22 +45,27 @@ public class OAuthController {
                 user = new UserModel();
                 user.setEmail(email);
                 user.setFullname(name);
+                // You might want to store the profile picture URL if you have a field for it
                 user = userRepository.save(user);
             } else {
                 user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new IllegalStateException("User not found despite existence check"));
             }
 
+            String redirectUrl = String.format(
+                "http://localhost:3000/oauth2/success?userID=%s&name=%s&email=%s",
+                user.getId(),
+                user.getFullname(),
+                user.getEmail()
+            );
+
             return ResponseEntity.ok(Map.of(
-                "redirectUrl", String.format(
-                    "http://localhost:3000/oauth2/success?userID=%s&name=%s",
-                    user.getId(),
-                    user.getFullname()
-                ),
+                "redirectUrl", redirectUrl,
                 "user", Map.of(
                     "id", user.getId(),
                     "name", user.getFullname(),
-                    "email", user.getEmail()
+                    "email", user.getEmail(),
+                    "picture", picture
                 )
             ));
         } catch (Exception e) {
