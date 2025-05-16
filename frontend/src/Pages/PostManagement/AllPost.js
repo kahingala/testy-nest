@@ -78,7 +78,7 @@ function AllPost() {
   }, []);
 
   const handleDelete = async (postId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+    const confirmDelete = window.confirm('Do you really want to delete this post?');
     if (!confirmDelete) {
       return; // Exit if the user cancels the confirmation
     }
@@ -304,7 +304,7 @@ function AllPost() {
                 </>
               ) : (
                 <>
-                  <User size={18} />
+                  <User size={17} />
                   <span>My Posts</span>
                 </>
               )}
