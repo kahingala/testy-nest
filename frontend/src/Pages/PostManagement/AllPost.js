@@ -8,7 +8,7 @@ import {
 import SideBar from '../../Components/SideBar/SideBar';
 import Modal from 'react-modal';
 import './PostManagement.css'; 
-import ChatBot from '../../Components/ChatBot/Chatbot'// Updated CSS file path
+import ChatBot from '../../Components/ChatBot/Chatbot'
 
 Modal.setAppElement('#root');
 
@@ -51,10 +51,10 @@ function AllPost() {
           acc[owner.userID] = owner.fullName;
           return acc;
         }, {});
-        console.log('Post Owners Map:', ownerMap); // Debug log to verify postOwners map
+        console.log('Post Owners Map:', ownerMap); 
         setPostOwners(ownerMap);
       } catch (error) {
-        console.error('Error fetching posts:', error); // Log error for fetching posts
+        console.error('Error fetching posts:', error); 
       }
     };
 
@@ -80,14 +80,14 @@ function AllPost() {
   const handleDelete = async (postId) => {
     const confirmDelete = window.confirm('Do you really want to delete this post?');
     if (!confirmDelete) {
-      return; // Exit if the user cancels the confirmation
+      return; 
     }
 
     try {
       await axios.delete(`http://localhost:8080/posts/${postId}`);
       alert('Post deleted successfully!');
-      setPosts(posts.filter((post) => post.id !== postId)); // Remove the deleted post from the UI
-      setFilteredPosts(filteredPosts.filter((post) => post.id !== postId)); // Update filtered posts
+      setPosts(posts.filter((post) => post.id !== postId)); 
+      setFilteredPosts(filteredPosts.filter((post) => post.id !== postId)); 
     } catch (error) {
       console.error('Error deleting post:', error);
       alert('Failed to delete post.');
@@ -95,7 +95,7 @@ function AllPost() {
   };
 
   const handleUpdate = (postId) => {
-    navigate(`/updatePost/${postId}`); // Navigate to the UpdatePost page with the post ID
+    navigate(`/updatePost/${postId}`); 
   };
 
   const handleMyPostsToggle = () => {
@@ -106,7 +106,7 @@ function AllPost() {
       // Filter posts by logged-in user ID
       setFilteredPosts(posts.filter((post) => post.userID === loggedInUserID));
     }
-    setShowMyPosts(!showMyPosts); // Toggle the state
+    setShowMyPosts(!showMyPosts); 
   };
 
   const handleLike = async (postId) => {
