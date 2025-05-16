@@ -15,7 +15,7 @@ function AddLeariningPost() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleAddTag = () => {
+  const handleAddTag = () => {//
     if (tagInput.trim() !== '') {
       setTags([...tags, tagInput.trim()]);
       setTagInput('');
