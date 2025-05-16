@@ -5,7 +5,7 @@ import { Plus, X, FileText, Tag, Globe, AlertCircle, Loader, ArrowLeft, BookOpen
 import './LearningSystem.css';
 import SideBar from '../../Components/SideBar/SideBar';
 
-function AddLeariningPost() {//
+function AddLeariningPost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [contentURL, setContentURL] = useState('');
