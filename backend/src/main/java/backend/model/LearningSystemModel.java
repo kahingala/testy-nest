@@ -21,8 +21,9 @@ public class LearningSystemModel {
     private String postOwnerID;
     private String postOwnerName;
     private String createdAt;
-    private Map<String, Boolean> likes = new HashMap<>(); 
-    private List<Comment> comments = new ArrayList<>(); 
+    private Map<String, Boolean> likes = new HashMap<>();
+    private List<Comment> comments = new ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
 
     public LearningSystemModel() {
     }
@@ -114,5 +115,13 @@ public class LearningSystemModel {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

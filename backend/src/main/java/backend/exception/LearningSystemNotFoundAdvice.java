@@ -14,9 +14,27 @@ public class LearningSystemNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(LearningSystemNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String,String> exceptionHandler(LearningSystemNotFoundException exception){
+    public Map<String, String> exceptionHandler(LearningSystemNotFoundException exception) {
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage",exception.getMessage());
+        errorMap.put("errorMessage", exception.getMessage());
+        return errorMap;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> illegalArgumentHandler(IllegalArgumentException exception) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", exception.getMessage());
+        return errorMap;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> userNotFoundHandler(UserNotFoundException exception) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", exception.getMessage());
         return errorMap;
     }
 }

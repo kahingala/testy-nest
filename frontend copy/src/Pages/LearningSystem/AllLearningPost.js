@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SideBar from '../../Components/SideBar/SideBar';
-import { 
-  Edit3, 
-  Trash2, 
-  ThumbsUp, 
-  Plus, 
-  List, 
-  User, 
-  BookOpen, 
-  FileText, 
-  X, 
-  Link, 
-  Tag, 
-  Calendar, 
-  ArrowUp, 
+import {
+  Edit3,
+  Trash2,
+  ThumbsUp,
+  Plus,
+  List,
+  User,
+  BookOpen,
+  FileText,
+  X,
+  Link,
+  Tag,
+  Calendar,
+  ArrowUp,
   ExternalLink,
-  Loader
+  Loader,
+  Save
 } from 'lucide-react';
 import './LearningSystem.css';
 
@@ -38,6 +39,9 @@ function AllLearningPost() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userId = localStorage.getItem('userID');
+  const [newReview, setNewReview] = useState({}); // { postId: { rating: number, reviewText: string } }
+  const [reviews, setReviews] = useState({}); // { postId: [{ id, userID, userFullName, rating, reviewText, createdAt }] }
+  const [editingReview, setEditingReview] = useState(null); // { postId, reviewId, rating, reviewText }
 
   useEffect(() => {
     fetchPosts();
@@ -54,14 +58,22 @@ function AllLearningPost() {
     }
   }, [searchQuery, selectedFilter, posts, showingMyPosts]);
 
-    const fetchPosts = async () => {
+  const fetchPosts = async () => {
     setIsLoading(true);
-      try {
-        const response = await axios.get('http://localhost:8080/learningSystem');
-        setPosts(response.data);
-      setFilteredPosts(response.data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
+    try {
+      const response = await axios.get('http://localhost:8080/learningSystem');
+      const posts = response.data;
+      setPosts(posts);
+      setFilteredPosts(posts);
+
+      // Initialize reviews state
+      const reviewsData = {};
+      posts.forEach(post => {
+        reviewsData[post.id] = post.reviews || [];
+      });
+      setReviews(reviewsData);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
     } finally {
       setIsLoading(false);
     }
@@ -69,24 +81,18 @@ function AllLearningPost() {
 
   const filterPosts = () => {
     let result = posts;
-    
-    // Filter by owner if showing my posts
     if (showingMyPosts) {
       result = result.filter((post) => post.postOwnerID === userId);
     }
-    
-    // Apply search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
-        post => 
-          post.title.toLowerCase().includes(query) || 
+        post =>
+          post.title.toLowerCase().includes(query) ||
           post.description.toLowerCase().includes(query) ||
           post.tags.some(tag => tag.toLowerCase().includes(query))
       );
     }
-    
-
     setFilteredPosts(result);
   };
 
@@ -136,13 +142,11 @@ function AllLearningPost() {
       const response = await axios.put(`http://localhost:8080/learningSystem/${postId}/like`, null, {
         params: { userID },
       });
-
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post.id === postId ? { ...post, likes: response.data.likes } : post
         )
       );
-
       setFilteredPosts((prevFilteredPosts) =>
         prevFilteredPosts.map((post) =>
           post.id === postId ? { ...post, likes: response.data.likes } : post
@@ -159,20 +163,16 @@ function AllLearningPost() {
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!newPost.title.trim()) newErrors.title = 'Title is required';
     if (!newPost.description.trim()) newErrors.description = 'Description is required';
     if (newPost.tags.length === 0) newErrors.tags = 'At least one tag is required';
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleAddPost = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
-    
     setIsSubmitting(true);
     try {
       const postData = {
@@ -182,7 +182,6 @@ function AllLearningPost() {
         createdAt: new Date().toISOString(),
         likes: {}
       };
-
       const response = await axios.post('http://localhost:8080/learningSystem', postData);
       setPosts([response.data, ...posts]);
       setFilteredPosts([response.data, ...filteredPosts]);
@@ -205,7 +204,7 @@ function AllLearningPost() {
       });
       setCurrentTag('');
       if (errors.tags) {
-        setErrors({...errors, tags: ''});
+        setErrors({ ...errors, tags: '' });
       }
     }
   };
@@ -222,16 +221,159 @@ function AllLearningPost() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Get all unique tags for filtering
   const allTags = [...new Set(posts.flatMap(post => post.tags || []))];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Review-related functions
+  const handleStarClick = (postId, star, isEditing = false) => {
+    if (isEditing) {
+      setEditingReview(prev => ({
+        ...prev,
+        rating: star
+      }));
+    } else {
+      setNewReview(prev => ({
+        ...prev,
+        [postId]: { ...prev[postId], rating: star }
+      }));
+    }
+  };
+
+  const handleReviewTextChange = (postId, reviewText, isEditing = false) => {
+    if (isEditing) {
+      setEditingReview(prev => ({
+        ...prev,
+        reviewText
+      }));
+    } else {
+      setNewReview(prev => ({
+        ...prev,
+        [postId]: { ...prev[postId], reviewText }
+      }));
+    }
+  };
+
+  const handleReviewSubmit = async (postId) => {
+    const review = newReview[postId];
+    const userID = localStorage.getItem('userID');
+
+    if (!userID) {
+      alert('Please log in to submit a review.');
+      return;
+    }
+
+    if (!review?.rating || !review?.reviewText?.trim()) {
+      alert('Please provide both a rating and review text.');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`http://localhost:8080/learningSystem/${postId}/review`, {
+        userID,
+        rating: review.rating,
+        reviewText: review.reviewText
+      });
+
+      setReviews(prev => ({
+        ...prev,
+        [postId]: [...(prev[postId] || []), response.data.reviews[response.data.reviews.length - 1]]
+      }));
+
+      setNewReview(prev => ({
+        ...prev,
+        [postId]: { rating: 0, reviewText: '' }
+      }));
+
+      alert('Review submitted!');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert(error.response?.data?.errorMessage || 'Failed to submit review.');
+    }
+  };
+
+  const handleEditReview = (postId, review) => {
+    setEditingReview({
+      postId,
+      reviewId: review.id,
+      rating: review.rating,
+      reviewText: review.reviewText
+    });
+  };
+
+  const handleUpdateReview = async () => {
+    const { postId, reviewId, rating, reviewText } = editingReview;
+    const userID = localStorage.getItem('userID');
+
+    if (!userID) {
+      alert('Please log in to update a review.');
+      return;
+    }
+
+    if (!rating || !reviewText?.trim()) {
+      alert('Please provide both a rating and review text.');
+      return;
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:8080/learningSystem/${postId}/review/${reviewId}`, {
+        userID,
+        rating,
+        reviewText
+      });
+
+      setReviews(prev => ({
+        ...prev,
+        [postId]: prev[postId].map(r =>
+          r.id === reviewId ? { ...r, rating, reviewText } : r
+        )
+      }));
+
+      setEditingReview(null);
+      alert('Review updated!');
+    } catch (error) {
+      console.error('Error updating review:', error);
+      alert(error.response?.data?.errorMessage || 'Failed to update review.');
+    }
+  };
+
+  const handleDeleteReview = async (postId, reviewId) => {
+    const userID = localStorage.getItem('userID');
+    if (!userID) {
+      alert('Please log in to delete a review.');
+      return;
+    }
+
+    if (!window.confirm('Are you sure you want to delete this review?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`http://localhost:8080/learningSystem/${postId}/review/${reviewId}`, {
+        params: { userID }
+      });
+
+      setReviews(prev => ({
+        ...prev,
+        [postId]: prev[postId].filter(r => r.id !== reviewId)
+      }));
+
+      alert('Review deleted!');
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      alert(error.response?.data?.errorMessage || 'Failed to delete review.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingReview(null);
+  };
+
   return (
     <div className="learning-container">
-          <SideBar />
+      <SideBar />
       <main>
         <div className="learning-header">
           <div className="learning-header-content">
@@ -269,13 +411,13 @@ function AllLearningPost() {
               <div className="learning-form-header">
                 <h2 className="learning-form-title">Create New Learning Post</h2>
                 <p className="learning-form-subtitle">Share your knowledge with the community</p>
-          <button
+                <button
                   className="learning-close-btn"
                   onClick={() => setShowAddForm(false)}
                   aria-label="Close form"
-          >
+                >
                   <X size={20} />
-          </button>
+                </button>
               </div>
               <form onSubmit={handleAddPost} className="learning-form-content">
                 <div className="learning-form-group">
@@ -289,7 +431,7 @@ function AllLearningPost() {
                     value={newPost.title}
                     onChange={(e) => {
                       setNewPost({ ...newPost, title: e.target.value });
-                      if (errors.title) setErrors({...errors, title: ''});
+                      if (errors.title) setErrors({ ...errors, title: '' });
                     }}
                     placeholder="Enter post title"
                     required
@@ -312,7 +454,7 @@ function AllLearningPost() {
                     value={newPost.description}
                     onChange={(e) => {
                       setNewPost({ ...newPost, description: e.target.value });
-                      if (errors.description) setErrors({...errors, description: ''});
+                      if (errors.description) setErrors({ ...errors, description: '' });
                     }}
                     placeholder="Write your post description"
                     required
@@ -428,13 +570,13 @@ function AllLearningPost() {
               <FileText size={28} />
             </div>
             <h3>No posts found</h3>
-            <p>{searchQuery || selectedFilter !== "all" ? 
-                "Try adjusting your search or filters" : 
-                "Be the first to share your knowledge!"}
+            <p>{searchQuery || selectedFilter !== "all" ?
+              "Try adjusting your search or filters" :
+              "Be the first to share your knowledge!"}
             </p>
             <div className="learning-empty-actions">
               {(searchQuery || selectedFilter !== "all") && (
-                <button 
+                <button
                   className="learning-btn learning-btn-secondary"
                   onClick={() => {
                     setSearchQuery("");
@@ -445,7 +587,7 @@ function AllLearningPost() {
                   <span>Clear Filters</span>
                 </button>
               )}
-              <button 
+              <button
                 className="learning-btn learning-btn-primary"
                 onClick={() => setShowAddForm(true)}
               >
@@ -453,13 +595,13 @@ function AllLearningPost() {
                 <span>Create New Post</span>
               </button>
             </div>
-              </div>
-            ) : (
+          </div>
+        ) : (
           <>
             <div className="learning-results-info">
               <span>Showing {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'}</span>
               {(searchQuery || selectedFilter !== "all" || showingMyPosts) && (
-                <button 
+                <button
                   className="learning-btn-text"
                   onClick={() => {
                     setSearchQuery("");
@@ -472,7 +614,7 @@ function AllLearningPost() {
                 </button>
               )}
             </div>
-            
+
             <div className="learning-grid">
               {filteredPosts.map((post) => (
                 <article key={post.id} className="learning-card">
@@ -489,18 +631,18 @@ function AllLearningPost() {
                         </time>
                       </div>
                     </div>
-                    
+
                     {post.postOwnerID === userId && (
                       <div className="learning-actions-compact">
-                        <button 
-                          onClick={() => handleUpdate(post.id)} 
+                        <button
+                          onClick={() => handleUpdate(post.id)}
                           className="learning-btn-update"
                           aria-label="Update post"
                         >
                           <Edit3 size={16} />
                           <span>Edit</span>
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDelete(post.id)}
                           className="learning-btn-delete"
                           aria-label="Delete post"
@@ -515,12 +657,12 @@ function AllLearningPost() {
                   <div className="learning-card-content">
                     <h2 className="learning-card-title">{post.title}</h2>
                     <p className="learning-card-description">{post.description}</p>
-                    
+
                     {post.tags?.length > 0 && (
                       <div className="learning-tags">
                         {post.tags.map((tag, index) => (
-                          <span 
-                            key={index} 
+                          <span
+                            key={index}
                             className="learning-tag"
                             onClick={() => setSelectedFilter(tag)}
                             style={{ cursor: 'pointer' }}
@@ -535,16 +677,16 @@ function AllLearningPost() {
                   {post.contentURL && (
                     <div className="learning-media">
                       {post.contentURL.includes('youtube') ? (
-                      <iframe
-                        src={getEmbedURL(post.contentURL)}
-                        title={post.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    ) : (
-                        <a 
-                          href={post.contentURL} 
-                          target="_blank" 
+                        <iframe
+                          src={getEmbedURL(post.contentURL)}
+                          title={post.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      ) : (
+                        <a
+                          href={post.contentURL}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="learning-content-link"
                         >
@@ -556,10 +698,178 @@ function AllLearningPost() {
                   )}
 
                   <footer className="learning-card-footer">
-                    <button 
+                    {/* Review Submission Form */}
+                    {editingReview?.postId !== post.id && (
+                      <div className="review-form">
+                        <div style={{ marginBottom: '8px' }}>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                              key={star}
+                              onClick={() => handleStarClick(post.id, star)}
+                              style={{
+                                marginRight: '2px',
+                                cursor: 'pointer',
+                                fontSize: '20px',
+                                color: star <= (newReview[post.id]?.rating || 0) ? '#ffc107' : '#e4e5e9'
+                              }}
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+
+                        <textarea
+                          placeholder="Share your feelings about this video..."
+                          value={newReview[post.id]?.reviewText || ''}
+                          onChange={(e) => handleReviewTextChange(post.id, e.target.value)}
+                          style={{ width: '100%', margin: '6px 0', padding: '5px', borderRadius: '4px' }}
+                          rows={3}
+                        />
+
+                        <button
+                          onClick={() => handleReviewSubmit(post.id)}
+                          style={{
+                            marginTop: '6px',
+                            backgroundColor: '#CC5500',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '6px 12px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Submit Review
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Edit Review Form */}
+                    {editingReview?.postId === post.id && (
+                      <div className="review-form">
+                        <div style={{ marginBottom: '8px' }}>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                              key={star}
+                              onClick={() => handleStarClick(post.id, star, true)}
+                              style={{
+                                marginRight: '2px',
+                                cursor: 'pointer',
+                                fontSize: '20px',
+                                color: star <= (editingReview.rating || 0) ? '#ffc107' : '#e4e5e9'
+                              }}
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+
+                        <textarea
+                          value={editingReview.reviewText || ''}
+                          onChange={(e) => handleReviewTextChange(post.id, e.target.value, true)}
+                          style={{ width: '100%', margin: '6px 0', padding: '5px', borderRadius: '4px' }}
+                          rows={3}
+                        />
+
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button
+                            onClick={handleUpdateReview}
+                            style={{
+                              marginTop: '6px',
+                              backgroundColor: '#CC5500',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '6px 12px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <Save size={16} />
+                            Save
+                          </button>
+                          <button
+                            onClick={handleCancelEdit}
+                            style={{
+                              marginTop: '6px',
+                              backgroundColor: '#6c757d',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '6px 12px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Display Reviews */}
+                    {reviews[post.id]?.length > 0 && (
+                      <div className="reviews-list" style={{ marginTop: '16px' }}>
+                        <h4>Reviews</h4>
+                        {reviews[post.id].map(review => (
+                          <div key={review.id} style={{ borderTop: '1px solid #eee', padding: '8px 0' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                              <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{review.userFullName}</span>
+                              <div>
+                                {[1, 2, 3, 4, 5].map(star => (
+                                  <span
+                                    key={star}
+                                    style={{
+                                      fontSize: '16px',
+                                      color: star <= review.rating ? '#ffc107' : '#e4e5e9'
+                                    }}
+                                  >
+                                    ★
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                            <p style={{ margin: '4px 0' }}>{review.reviewText}</p>
+                            <small style={{ color: '#666' }}>{formatDate(review.createdAt)}</small>
+                            {(review.userID === userId || post.postOwnerID === userId) && (
+                              <div style={{ marginTop: '4px', display: 'flex', gap: '8px' }}>
+                                <button
+                                  onClick={() => handleEditReview(post.id, review)}
+                                  style={{
+                                    backgroundColor: '#007bff',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    padding: '4px 8px',
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  <Edit3 size={14} />
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteReview(post.id, review.id)}
+                                  style={{
+                                    backgroundColor: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    padding: '4px 8px',
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  <Trash2 size={14} />
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Like Button */}
+                    <button
                       onClick={() => handleLike(post.id)}
                       className={`learning-like-btn ${post.likes?.[userId] ? 'liked' : ''}`}
-                      aria-label={post.likes?.[userId] ? "Unlike post" : "Like post"}
+                      aria-label={post.likes?.[userId] ? 'Unlike post' : 'Like post'}
                     >
                       <ThumbsUp size={18} />
                       <span>{Object.values(post.likes || {}).filter(Boolean).length}</span>
@@ -567,7 +877,7 @@ function AllLearningPost() {
                   </footer>
                 </article>
               ))}
-                  </div>
+            </div>
           </>
         )}
 
@@ -579,7 +889,7 @@ function AllLearningPost() {
           <Plus size={24} />
         </button>
 
-        <button 
+        <button
           className="learning-scroll-top"
           onClick={scrollToTop}
           aria-label="Scroll to top"

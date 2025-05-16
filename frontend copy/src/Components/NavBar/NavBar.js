@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, BellRing, ChefHat, Utensils, Cake, Egg } from 'lucide-react';
+import { Bell, BellRing, ChefHat, Utensils, Cake, User } from 'lucide-react';
 import axios from 'axios';
 import './NavBar.css';
 
@@ -87,7 +87,7 @@ function NavBar() {
                     </div>
                     
                     <div className="navbar-icon-container">
-                        <Egg
+                        <User
                             className="navbar-icon"
                             style={{ display: localStorage.getItem('userType') === 'googale' ? 'none' : 'block' }}
                             onClick={() => setShowCard(!showCard)}
@@ -115,7 +115,7 @@ function NavBar() {
                     <div className="navbar-card-content">
                         <div className="navbar-card-info">
                             <div className="navbar-card-field">
-                                <ChefHat size={18} />
+ |                               <ChefHat size={18} />
                                 <div className="navbar-card-field-content">
                                     <div className="navbar-card-field-label">Email</div>
                                     <div className="navbar-card-field-value">

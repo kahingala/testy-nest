@@ -1,6 +1,7 @@
 package backend.model;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -10,16 +11,17 @@ import java.util.Set;
 @Document(collection = "user")
 public class UserModel {
     @Id
+    @GeneratedValue
     private String id;
     private String fullname;
     private String email;
     private String password;
     private String phone;
-    private String profilePicture;
     private List<String> skills;
     private Set<String> followedUsers = new HashSet<>();
 
     public UserModel() {
+
     }
 
     public UserModel(String id, String fullname, String email, String password, String phone, List<String> skills) {
@@ -69,14 +71,6 @@ public class UserModel {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public List<String> getSkills() {
