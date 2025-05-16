@@ -40,10 +40,17 @@ function AllLearningPost() {
   const userId = localStorage.getItem('userID');
   const [ratings, setRatings] = useState({});
 const [comments, setComments] = useState({});
+const [reviews, setReviews] = useState([]);
+const [editingReviewId, setEditingReviewId] = useState(null);
+const [editComment, setEditComment] = useState('');
+const [editRating, setEditRating] = useState(0);
+
 
 
   useEffect(() => {
     fetchPosts();
+    fetchReviews();
+   
   }, []);
 
   useEffect(() => {
@@ -231,6 +238,9 @@ const [comments, setComments] = useState({});
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+//------------review sec -------------------------------
+
+
 
   const handleStarClick = (postId, star) => {
     setRatings(prev => ({ ...prev, [postId]: star }));
@@ -240,20 +250,84 @@ const [comments, setComments] = useState({});
     setComments(prev => ({ ...prev, [postId]: commentText }));
   };
   
-  const handleReviewSubmit = (postId) => {
+  const handleReviewSubmit = async (postId, usern) => {
     const rating = ratings[postId];
     const comment = comments[postId];
+    const response ={postId:postId,
+                      rating: ratings[postId],
+                      comment: comments[postId],
+                      userName:usern};
   
     if (!rating || !comment?.trim()) {
       alert("Please provide both a rating and comment.");
       return;
     }
+
+    try {
+      
+      const respo = await axios.post('http://localhost:8080/api/reviews', response);
+      console.log(respo);
+      setRatings({});
+      setComments({});
+      setErrors({});
   
     // Optionally send to backend here
-    console.log(`Post ${postId} rated ${rating} stars with comment: "${comment}"`);
+    console.log(`Post ${response.postId} rated ${response.rating} stars with comment: "${response.comment}"`);
     alert("Review submitted!");
+    fetchReviews();
+  } catch (error) {
+    console.error('Error adding review:', error);
+    alert('Failed to add review. Please try again.');
+  }
   };
   
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/reviews');
+      setReviews(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Failed to fetch reviews:", error);
+    }
+  };
+  const handleDeleteReview = async (reviewId) => {
+    if (!window.confirm('Are you sure you want to delete this review?')) return;
+  
+    try {
+      await axios.delete(`http://localhost:8080/api/reviews/${reviewId}`);
+  
+      // Refresh reviews
+      const res = await axios.get('http://localhost:8080/api/reviews');
+      setReviews(res.data);
+  
+     // alert('Review deleted.');
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Failed to delete review.');
+    }
+  };
+  const handleUpdateReview = async (reviewId) => {
+    try {
+      const updated = {
+        rating: editRating,
+        comment: editComment
+      };
+  
+      await axios.put(`http://localhost:8080/api/reviews/${reviewId}`, updated);
+  
+      // Refresh reviews
+      const res = await axios.get('http://localhost:8080/api/reviews');
+      setReviews(res.data);
+  
+      setEditingReviewId(null);
+      setEditComment('');
+      setEditRating(0);
+      alert('Review updated!');
+    } catch (error) {
+      console.error('Update failed:', error);
+      alert('Failed to update review.');
+    }
+  };
 
   return (
     <div className="learning-container">
@@ -583,14 +657,144 @@ const [comments, setComments] = useState({});
 
                   <footer className="learning-card-footer">
                   {/* Rating & Review Section */}
+                  {/* Show reviews for this post */}
+     {/* Display Submitted Reviews */}
+     <div style={{ marginTop: '20px' }}>
+  <h4>Reviews:</h4>
+  {reviews.filter((review) => review.postId === post.id).length === 0 ? (
+    <p style={{ fontStyle: 'italic', color: '#888' }}>No reviews yet.</p>
+  ) : (
+    reviews
+      .filter((review) => review.postId === post.id)
+      .map((review) => (
+        <div key={review.id} style={{ marginBottom: '10px', padding: '8px', background: '#f9f9f9', borderRadius: '6px' }}>
+          {editingReviewId === review.id ? (
+            <>
+              {/* Editable Stars */}
+              {post.postOwnerName}
+              <div style={{ marginBottom: '4px' }}>
+              
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={() => setEditRating(star)}
+                    style={{
+                      fontSize: '18px',
+                      cursor: 'pointer',
+                      color: star <= editRating ? '#ffc107' : '#e4e5e9'
+                    }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+
+              {/* Editable Comment */}
+              <textarea
+                value={editComment}
+                onChange={(e) => setEditComment(e.target.value)}
+                rows={2}
+                style={{ width: '100%', marginBottom: '6px', padding: '5px' }}
+              />
+
+              {/* Update and Cancel Buttons */}
+              <button
+                onClick={() => handleUpdateReview(review.id)}
+                style={{
+                  marginRight: '8px',
+                  backgroundColor: '#007bff',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '4px 10px',
+                  cursor: 'pointer'
+                }}
+              >
+                Update
+              </button>
+              <button
+                onClick={() => setEditingReviewId(null)}
+                style={{
+                  backgroundColor: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '4px 10px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Static Stars */}
+              {post.postOwnerName}
+              <div>
+              
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    style={{
+                      fontSize: '18px',
+                      color: star <= review.rating ? '#ffc107' : '#e4e5e9'
+                    }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+              <p style={{ margin: '4px 0' }}>{review.comment}</p>
+
+              {/* Edit and Delete Buttons */}
+              <button
+                onClick={() => {
+                  setEditingReviewId(review.id);
+                  setEditComment(review.comment);
+                  setEditRating(review.rating);
+                }}
+                style={{
+                  marginRight: '8px',
+                  backgroundColor: '#28a745',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '2px 8px',
+                  cursor: 'pointer'
+                }}
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDeleteReview(review.id)}
+                style={{
+                  backgroundColor: '#dc3545',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '2px 8px',
+                  cursor: 'pointer'
+                }}
+              >
+                Delete
+              </button>
+            </>
+          )}
+        </div>
+      ))
+  )}
+</div>
+
+  <br/>
                   
-  <div style={{marginRight:'5px'}}>
+  <div style={{marginRight:'15px',marginLeft:'2px'}}>
     {[1, 2, 3, 4, 5].map((star) => (
       <span
         key={star}
         onClick={() => handleStarClick(post.id, star)}
         style={{
           marginRight:'2px',
+          marginLeft:'2px',
           cursor: 'pointer',
           fontSize: '20px',
           color: star <= (ratings[post.id] || 0) ? '#ffc107' : '#e4e5e9'
@@ -605,15 +809,15 @@ const [comments, setComments] = useState({});
     placeholder="Leave a review..."
     value={comments[post.id] || ''}
     onChange={(e) => handleCommentChange(post.id, e.target.value)}
-    style={{ width: '100%', margin: '6px', padding: '5px' }}
-    rows={3}
+    style={{ width: '95%', margin: '6px', padding: '5px' }}
+    rows={2}
   />
 
   <button
-    onClick={() => handleReviewSubmit(post.id)}
+    onClick={() => handleReviewSubmit(post.id,post.postOwnerName)}
     style={{
-      marginLeft:'25px',
-      marginTop: '6px',
+      marginLeft:'5px',
+      marginTop: '5px',
       backgroundColor: '#CC5500',
       color: 'white',
       border: 'none',
@@ -626,7 +830,7 @@ const [comments, setComments] = useState({});
     Submit Review
   </button>
 
-
+<hr></hr>
       
                     <button 
                       onClick={() => handleLike(post.id)}

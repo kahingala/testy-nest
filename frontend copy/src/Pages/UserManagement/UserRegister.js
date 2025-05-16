@@ -38,10 +38,9 @@ function UserRegister() {
             isValid = false;
         }
 
-        if (formData.skills.length < 2) {
-            alert("Please add at least two cooking skills.");
-            isValid = false;
-        }
+       // if (formData.skills.length < 2) {
+         //   alert("Please add at least two cooking skills.");
+           // isValid = false;}
 
         if (!isValid) return;
 

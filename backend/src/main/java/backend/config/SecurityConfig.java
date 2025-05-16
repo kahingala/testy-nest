@@ -27,7 +27,8 @@ public class SecurityConfig {
                                 "/media/**",
                                 "/learningSystem/**", // Allow public access to learning system endpoints
                                 "/learningProgress/**", // Allow public access to add learning progress
-                                "/notifications/**" // Allow public access to notifications
+                                "/notifications/**", // Allow public access to notifications
+                                "/api/reviews/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

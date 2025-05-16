@@ -125,6 +125,7 @@ function UserLogin() {
                   onChange={handleInputChange}
                   required
                   className={styles.formInput}
+                  
                 />
                 <span 
                   className={styles.passwordToggle}

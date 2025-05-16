@@ -215,7 +215,7 @@
 .learning-card-footer {
   padding: 0.75rem 1.25rem;
   border-top: 1px solid var(--border);
-  display: flex;
+  display: auto;
   justify-content: flex-end;
 }
 
