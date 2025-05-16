@@ -157,12 +157,12 @@
   }
   
   .icon-btn:hover {
-    color: #143D60;
-    background: #f1f5f9;
+    color: #15446d;
+    background: #e2e3e4;
   }
   
   .icon-btn.danger:hover {
-    color: #dc2626;
+    color: #da2c2c;
   }
   
   .post-content {
@@ -171,7 +171,7 @@
   
   .post-title {
     font-size: 1.25rem;
-    color: #143D60;
+    color: #133a5c;
     margin-bottom: 0.5rem;
   }
   
