@@ -21,7 +21,7 @@ function UserRegister() {
 
     const handleAddSkill = () => {
         if (skillInput.trim()) {
-            setFormData({ ...formData, skills: [...formData.skills, skillInput.trim()] });
+            setFormData({ ...formData, skills: [...formData.skills, skillInput] });
             setSkillInput('');
         }
     };
@@ -71,7 +71,7 @@ function UserRegister() {
             <GiCookingPot className={styles.floatingIcon} />
             <FaCookieBite className={styles.floatingIcon} />
             <FaBirthdayCake className={styles.floatingIcon} />
-
+            
             <div className={styles.authInnerContainer}>
                 <div className={styles.authHero}>
                     <div className={styles.authHeroImage}></div>
@@ -91,7 +91,6 @@ function UserRegister() {
                         <p className={styles.authSubtitle}>Join our community of food enthusiasts</p>
                     </div>
                     <form onSubmit={handleSubmit} className={styles.authForm}>
-                        {/* Full Name */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 <IoMdPerson className={styles.formLabelIcon} />
@@ -110,8 +109,6 @@ function UserRegister() {
                                 />
                             </div>
                         </div>
-
-                        {/* Email */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 <IoMdMail className={styles.formLabelIcon} />
@@ -130,8 +127,6 @@ function UserRegister() {
                                 />
                             </div>
                         </div>
-
-                        {/* Password */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 <IoMdLock className={styles.formLabelIcon} />
@@ -150,8 +145,6 @@ function UserRegister() {
                                 />
                             </div>
                         </div>
-
-                        {/* Phone */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 <IoMdCall className={styles.formLabelIcon} />
@@ -178,35 +171,27 @@ function UserRegister() {
                                 />
                             </div>
                         </div>
-
-                        {/* Skills */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 <FaUtensils className={styles.formLabelIcon} />
                                 Cooking Skills
                             </label>
-
-                            {/* Display added skills */}
                             <div className={styles.skillsDisplay}>
                                 {formData.skills.map((skill, index) => (
                                     <span className={styles.skillTag} key={index}>
                                         <IoMdRestaurant className={styles.skillTagIcon} />
                                         {skill}
-                                        <span
-                                            className={styles.deleteSkill}
+                                        <IoMdAdd 
+                                            className={styles.deleteSkill} 
                                             onClick={() => {
                                                 const updatedSkills = formData.skills.filter((_, i) => i !== index);
                                                 setFormData({ ...formData, skills: updatedSkills });
                                             }}
-                                        >
-                                            ✕
-                                        </span>
+                                        />
                                     </span>
                                 ))}
                             </div>
-
-                            {/* Skill Input + Add Button */}
-                            <div className={styles.skillInputWrapper}>
+                            <div className={styles.skillInputContainer}>
                                 <div style={{ position: 'relative', flex: 1 }}>
                                     <FaUtensils className={styles.inputIcon} />
                                     <input
@@ -218,24 +203,16 @@ function UserRegister() {
                                         style={{ paddingLeft: '2.5rem' }}
                                     />
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={handleAddSkill}
-                                    className={styles.addSkillButtonReal}
-                                >
-                                    <IoMdAdd />
-                                    Add Skill
-                                </button>
+                                <IoMdAdd 
+                                    onClick={handleAddSkill} 
+                                    className={styles.addSkillButton} 
+                                />
                             </div>
                         </div>
-
-                        {/* Submit Button */}
                         <button type="submit" className={styles.submitButton}>
                             <FaSignInAlt className={styles.submitButtonIcon} />
                             Register Now
                         </button>
-
-                        {/* Footer Link */}
                         <p className={styles.authFooter}>
                             Already have an account?{' '}
                             <a href="/" className={styles.authLink}>
@@ -250,4 +227,4 @@ function UserRegister() {
     );
 }
 
-export default UserRegister;
+export default UserRegister;
